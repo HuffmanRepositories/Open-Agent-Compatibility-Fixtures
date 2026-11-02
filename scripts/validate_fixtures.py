@@ -15,6 +15,7 @@ ALLOWED_OUTCOMES = {
 REQUIRED = {"fixture_id", "title", "status", "purpose", "sources", "input", "expected", "limitations"}
 
 errors = []
+seen_ids = {}
 files = FIXTURES + ([TEMPLATE] if TEMPLATE.exists() else [])
 for path in files:
     try:
@@ -33,6 +34,22 @@ for path in files:
     missing = REQUIRED - data.keys()
     if missing:
         errors.append(f"{path.relative_to(ROOT)}: missing fields: {', '.join(sorted(missing))}")
+    fixture_id = data.get("fixture_id")
+    if not isinstance(fixture_id, str) or not fixture_id.strip():
+        errors.append(f"{path.relative_to(ROOT)}: fixture_id must be a non-empty string")
+    elif fixture_id in seen_ids:
+        errors.append(
+            f"{path.relative_to(ROOT)}: duplicate fixture_id {fixture_id!r} "
+            f"(also in {seen_ids[fixture_id].relative_to(ROOT)})"
+        )
+    else:
+        seen_ids[fixture_id] = path
+
+    for field in ("title", "purpose"):
+        if not isinstance(data.get(field), str) or not data[field].strip():
+            errors.append(f"{path.relative_to(ROOT)}: {field} must be a non-empty string")
+    if not isinstance(data.get("input"), dict):
+        errors.append(f"{path.relative_to(ROOT)}: input must be an object")
     if data.get("status") not in ALLOWED_STATUS:
         errors.append(f"{path.relative_to(ROOT)}: status must be one of {sorted(ALLOWED_STATUS)}")
     sources = data.get("sources")
@@ -45,6 +62,8 @@ for path in files:
     expected = data.get("expected")
     if not isinstance(expected, dict) or expected.get("outcome") not in ALLOWED_OUTCOMES:
         errors.append(f"{path.relative_to(ROOT)}: expected.outcome must be one of {sorted(ALLOWED_OUTCOMES)}")
+    elif not isinstance(expected.get("description"), str) or not expected["description"].strip():
+        errors.append(f"{path.relative_to(ROOT)}: expected.description must be a non-empty string")
     if not isinstance(data.get("limitations"), list) or not data.get("limitations"):
         errors.append(f"{path.relative_to(ROOT)}: limitations must be a non-empty list")
 
