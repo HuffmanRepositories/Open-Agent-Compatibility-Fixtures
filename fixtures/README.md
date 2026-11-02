@@ -9,6 +9,7 @@ These fixtures are **draft mapping examples**, not compatibility evidence or cer
 | [Capability label ↔ Agent Card skill](oix-a2a-capability-mapping.json) | Draft | Partial; explicit reviewed mapping is required |
 | [Artifact output ↔ provenance evidence](oix-a2a-artifact-evidence.json) | Draft | Partial; task output is not automatically provenance evidence |
 | [Task lifecycle and bridge correlation](oix-a2a-task-state.json) | Draft | Partial; A2A lifecycle state is bridge-mapped, not native OIX semantics |
+| [Protocol error vs task failure](oix-a2a-error-mapping.json) | Draft | Partial; preserve error layer, correlation and retryability semantics |
 
 Sources:
 - OIX v0.1 pinned at [commit 8c25c3b](https://github.com/HuffmanMainNode/Open-Intelligence-Exchange/blob/8c25c3b014eddaf074d5c86f0244e22140617728/protocol/oix-v0.1.md)
