@@ -1,0 +1,50 @@
+{
+  "fixture_id": "oix-a2a-task-state-001",
+  "title": "A2A task lifecycle states require bridge-owned correlation",
+  "status": "draft",
+  "purpose": "Illustrate why A2A task lifecycle states must not be presented as native OIX task-state semantics.",
+  "sources": [
+    {
+      "protocol": "OIX",
+      "version": "0.1",
+      "url": "https://github.com/HuffmanMainNode/Open-Intelligence-Exchange/blob/8c25c3b014eddaf074d5c86f0244e22140617728/protocol/oix-v0.1.md"
+    },
+    {
+      "protocol": "A2A",
+      "version": "1.0.0",
+      "url": "https://a2a-protocol.org/v1.0.0/specification"
+    }
+  ],
+  "input": {
+    "oix_request": {
+      "message_id": "00000000-0000-4000-8000-000000000002",
+      "type": "task.request",
+      "payload": {
+        "bridge_correlation_id": "bridge-task-002"
+      }
+    },
+    "a2a_task_example": {
+      "id": "task-demo-002",
+      "contextId": "context-demo-002",
+      "status": {
+        "state": "working"
+      }
+    },
+    "bridge_state": {
+      "oix_message_id": "00000000-0000-4000-8000-000000000002",
+      "a2a_task_id": "task-demo-002",
+      "a2a_context_id": "context-demo-002",
+      "state_mapping_profile": "example-profile-v1"
+    }
+  },
+  "expected": {
+    "outcome": "partial",
+    "description": "A bridge may track A2A taskId/contextId and state in bridge-owned metadata, but must not imply that OIX v0.1 task.request/task.accepted/task.progress/task.result natively define A2A task lifecycle semantics. State translation requires a documented profile for terminal, intermediate, failure, timeout and cancellation behavior; preserve the original protocol state and correlation identifiers."
+  },
+  "limitations": [
+    "Illustrative data only; no live task or RPC.",
+    "State mapping is not normative for OIX or A2A.",
+    "No handling of streaming, push notifications, cancellation, retries, or race conditions is tested.",
+    "Draft; no implementation test."
+  ]
+}
