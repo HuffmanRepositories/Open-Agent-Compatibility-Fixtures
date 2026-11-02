@@ -1,24 +1,57 @@
 #!/usr/bin/env python3
-"""Parse JSON fixtures and template files; this is not protocol conformance."""
+"""Validate fixture JSON and required metadata; not protocol conformance."""
 from pathlib import Path
 import json
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = sorted((ROOT / "fixtures").rglob("*.json")) + sorted((ROOT / "docs").glob("fixture-template.json"))
+FIXTURES = sorted((ROOT / "fixtures").rglob("*.json"))
+TEMPLATE = ROOT / "docs" / "fixture-template.json"
+ALLOWED_STATUS = {"draft", "reviewed", "validated"}
+ALLOWED_OUTCOMES = {
+    "direct", "transformed", "partial", "lossy", "ambiguous",
+    "unsupported", "not-tested", "not tested",
+}
+REQUIRED = {"fixture_id", "title", "status", "purpose", "sources", "input", "expected", "limitations"}
 
 errors = []
-for path in FILES:
+files = FIXTURES + ([TEMPLATE] if TEMPLATE.exists() else [])
+for path in files:
     try:
-        with path.open(encoding="utf-8") as stream:
-            json.load(stream)
+        data = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        errors.append(f"{path.relative_to(ROOT)}: {exc}")
+        errors.append(f"{path.relative_to(ROOT)}: invalid JSON: {exc}")
+        continue
+
+    if path == TEMPLATE:
+        # Template placeholders are intentionally not treated as a complete fixture.
+        continue
+    if not isinstance(data, dict):
+        errors.append(f"{path.relative_to(ROOT)}: root must be an object")
+        continue
+
+    missing = REQUIRED - data.keys()
+    if missing:
+        errors.append(f"{path.relative_to(ROOT)}: missing fields: {', '.join(sorted(missing))}")
+    if data.get("status") not in ALLOWED_STATUS:
+        errors.append(f"{path.relative_to(ROOT)}: status must be one of {sorted(ALLOWED_STATUS)}")
+    sources = data.get("sources")
+    if not isinstance(sources, list) or not sources:
+        errors.append(f"{path.relative_to(ROOT)}: sources must be a non-empty list")
+    else:
+        for i, source in enumerate(sources):
+            if not isinstance(source, dict) or not all(source.get(k) for k in ("protocol", "version", "url")):
+                errors.append(f"{path.relative_to(ROOT)}: source[{i}] needs protocol, version, and url")
+    expected = data.get("expected")
+    if not isinstance(expected, dict) or expected.get("outcome") not in ALLOWED_OUTCOMES:
+        errors.append(f"{path.relative_to(ROOT)}: expected.outcome must be one of {sorted(ALLOWED_OUTCOMES)}")
+    if not isinstance(data.get("limitations"), list) or not data.get("limitations"):
+        errors.append(f"{path.relative_to(ROOT)}: limitations must be a non-empty list")
 
 if errors:
-    print("Fixture JSON validation failed:")
+    print("Fixture validation failed:")
     print("\n".join(errors))
     sys.exit(1)
 
-print(f"Validated JSON syntax in {len(FILES)} file(s).")
-print("Note: JSON parsing does not establish protocol compatibility.")
+print(f"Validated JSON syntax and metadata for {len(FIXTURES)} fixture(s).")
+print("Note: this does not establish protocol conformance or mapping correctness.")
