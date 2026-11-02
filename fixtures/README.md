@@ -6,6 +6,8 @@ These fixtures are **draft mapping examples**, not compatibility evidence or cer
 |---|---|---|
 | [OIX task request ↔ A2A message](oix-a2a-text-request.json) | Draft | Partial mapping; bridge must validate/authenticate and track correlation separately |
 | [A2A cancellation unsupported in OIX core](oix-a2a-cancel-unsupported.json) | Draft | Unsupported in OIX v0.1 core; do not invent a core message type |
+| [Capability label ↔ Agent Card skill](oix-a2a-capability-mapping.json) | Draft | Partial; explicit reviewed mapping is required |
+| [Artifact output ↔ provenance evidence](oix-a2a-artifact-evidence.json) | Draft | Partial; task output is not automatically provenance evidence |
 
 Sources:
 - OIX v0.1 pinned at [commit 8c25c3b](https://github.com/HuffmanMainNode/Open-Intelligence-Exchange/blob/8c25c3b014eddaf074d5c86f0244e22140617728/protocol/oix-v0.1.md)
