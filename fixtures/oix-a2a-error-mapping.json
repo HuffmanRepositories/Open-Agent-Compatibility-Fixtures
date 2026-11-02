@@ -1,0 +1,61 @@
+{
+  "fixture_id": "oix-a2a-error-mapping-001",
+  "title": "Protocol error and task-level failure need distinct mapping",
+  "status": "draft",
+  "purpose": "Illustrate why a bridge should preserve the distinction between a protocol/RPC error and an application task failure rather than flattening both into a generic OIX error.",
+  "sources": [
+    {
+      "protocol": "OIX",
+      "version": "0.1",
+      "url": "https://github.com/HuffmanMainNode/Open-Intelligence-Exchange/blob/8c25c3b014eddaf074d5c86f0244e22140617728/protocol/oix-v0.1.md"
+    },
+    {
+      "protocol": "A2A",
+      "version": "1.0.0",
+      "url": "https://a2a-protocol.org/v1.0.0/specification"
+    }
+  ],
+  "input": {
+    "a2a_protocol_error": {
+      "code": -32602,
+      "message": "Invalid params",
+      "data": {
+        "field": "message.parts"
+      }
+    },
+    "a2a_task_failure": {
+      "task_id": "task-example-err-7",
+      "status": {
+        "state": "failed",
+        "message": {
+          "role": "agent",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "The requested operation could not be completed."
+            }
+          ]
+        }
+      }
+    },
+    "oix_error_example": {
+      "type": "error",
+      "payload": {
+        "code": "bridge.error.example",
+        "message": "Illustrative failure",
+        "retryable": false
+      }
+    }
+  },
+  "expected": {
+    "outcome": "partial",
+    "description": "Bridge must retain whether failure occurred at protocol/RPC level or within task execution, along with correlation/task IDs and relevant source status/code. Any conversion to OIX error payload needs an explicitly documented profile for error namespace, retryability, terminal state, and detail preservation. Do not infer retryability from message text or silently collapse protocol errors into task failures."
+  },
+  "limitations": [
+    "Examples are schematic, not normative wire payloads.",
+    "No actual RPC request or task execution occurs.",
+    "Retry semantics, error code registry and state mapping remain undefined.",
+    "Draft fixture; not tested against implementations.",
+    "No security or certification claim."
+  ]
+}
