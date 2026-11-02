@@ -29,4 +29,4 @@ Never include credentials, tokens, private keys, personal data, or real user/cus
 
 ## Validation
 
-JSON fixtures must parse. Parsing alone does not establish protocol conformance or semantic correctness. Human review should check references and expected outcomes.
+The CI validator checks JSON syntax, required metadata, allowed status/outcome values, and unique fixture IDs. These checks are structural only: they do not establish protocol conformance or semantic correctness. Human review should verify source references, version pins, and expected outcomes.
