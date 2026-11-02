@@ -1,0 +1,48 @@
+{
+  "fixture_id": "oix-a2a-text-request-001",
+  "title": "Text task request with explicit bridge correlation",
+  "status": "draft",
+  "purpose": "Illustrate a minimal OIX task.request payload that a separately specified bridge could map to an A2A SendMessage request. This is not a protocol-level direct mapping.",
+  "sources": [
+    {
+      "protocol": "OIX",
+      "version": "0.1",
+      "url": "https://github.com/HuffmanMainNode/Open-Intelligence-Exchange/blob/main/protocol/oix-v0.1.md"
+    },
+    {
+      "protocol": "A2A",
+      "version": "1.0.0",
+      "url": "https://a2a-protocol.org/v1.0.0/specification"
+    }
+  ],
+  "input": {
+    "oix_body": {
+      "protocol": "OIX",
+      "version": "0.1",
+      "message_id": "00000000-0000-4000-8000-000000000001",
+      "sender": "ed25519:example-fingerprint-not-valid",
+      "recipient": "agent.example.receiver",
+      "type": "task.request",
+      "issued_at": 1700000000,
+      "expires_at": 1700000060,
+      "nonce": "fixture-nonce-not-for-security",
+      "requested_capability": "text.summarization",
+      "payload": {
+        "text": "Summarize the public document at https://example.org/sample in three bullet points.",
+        "bridge_correlation_id": "bridge-demo-001"
+      }
+    },
+    "note": "Envelope is illustrative only: signature, key, fingerprint, and times are not cryptographically valid test data."
+  },
+  "expected": {
+    "outcome": "partial",
+    "description": "A bridge may map the text request into an A2A Message/SendMessage only after it validates OIX authentication/authorization and resolves a configured capability mapping. OIX message_id and bridge_correlation_id must be tracked separately from A2A taskId/contextId. This fixture does not define universal A2A JSON field serialization."
+  },
+  "limitations": [
+    "Draft fixture; not reviewed or validated against implementations.",
+    "Placeholder fingerprint and nonce are deliberately invalid/non-secret.",
+    "No OIX signature verification or A2A RPC is performed.",
+    "Capability mapping, authentication, transport, task response, and artifact behavior are out of scope.",
+    "Do not infer native OIX task-state or A2A task semantics from this payload."
+  ]
+}
