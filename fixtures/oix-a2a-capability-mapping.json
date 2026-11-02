@@ -1,0 +1,41 @@
+{
+  "fixture_id": "oix-a2a-capability-mapping-001",
+  "title": "OIX capability label requires explicit mapping to A2A skill",
+  "status": "draft",
+  "purpose": "Show that an OIX capability label cannot be assumed to match an A2A Agent Card skill by name or semantics without a mapping profile.",
+  "sources": [
+    {
+      "protocol": "OIX",
+      "version": "0.1",
+      "url": "https://github.com/HuffmanMainNode/Open-Intelligence-Exchange/blob/8c25c3b014eddaf074d5c86f0244e22140617728/protocol/oix-v0.1.md"
+    },
+    {
+      "protocol": "A2A",
+      "version": "1.0.0",
+      "url": "https://a2a-protocol.org/v1.0.0/specification"
+    }
+  ],
+  "input": {
+    "oix_requested_capability": "text.summarization",
+    "example_a2a_skill": {
+      "id": "summarize-public-documents",
+      "name": "Summarize public documents",
+      "description": "Summarizes public text sources and returns a short structured summary."
+    },
+    "mapping_profile": {
+      "oix_capability": "text.summarization",
+      "a2a_skill_id": "summarize-public-documents",
+      "reviewed_by_operator": true
+    }
+  },
+  "expected": {
+    "outcome": "partial",
+    "description": "Mapping is only valid when an explicit profile associates the OIX capability with the A2A skill and documents scope, auth, endpoint and behavior. Name similarity alone must not authorize invocation. If no reviewed mapping exists, the bridge should report unmapped/unsupported rather than silently select a skill."
+  },
+  "limitations": [
+    "Illustrative mapping record; not a normative schema for either protocol.",
+    "No actual Agent Card is fetched or validated.",
+    "Capability matching is not authorization; receiver-side OIX policy and A2A security requirements remain separate.",
+    "Draft; no implementation test."
+  ]
+}
