@@ -1,0 +1,51 @@
+{
+  "fixture_id": "oix-a2a-artifact-evidence-001",
+  "title": "A2A output artifact is not automatically OIX evidence",
+  "status": "draft",
+  "purpose": "Prevent semantic conflation between ordinary task output/artifact and OIX evidence with provenance fields.",
+  "sources": [
+    {
+      "protocol": "OIX",
+      "version": "0.1",
+      "url": "https://github.com/HuffmanMainNode/Open-Intelligence-Exchange/blob/8c25c3b014eddaf074d5c86f0244e22140617728/protocol/oix-v0.1.md"
+    },
+    {
+      "protocol": "A2A",
+      "version": "1.0.0",
+      "url": "https://a2a-protocol.org/v1.0.0/specification"
+    }
+  ],
+  "input": {
+    "a2a_artifact_example": {
+      "name": "summary.txt",
+      "parts": [
+        {
+          "kind": "text",
+          "text": "A short summary of the source."
+        }
+      ]
+    },
+    "oix_evidence_example": {
+      "content_sha256": "example-digest-not-computed",
+      "source_uri": "https://example.org/source",
+      "collected_at": "2026-01-01T00:00:00Z",
+      "collector_id": "demo-bridge",
+      "collection_method": "manual-example",
+      "status": "observed",
+      "limitations": [
+        "Example data; no source validation performed."
+      ]
+    }
+  },
+  "expected": {
+    "outcome": "partial",
+    "description": "A2A artifact/Part represents task output, whereas OIX evidence describes provenance and collection context. An artifact may be carried as output, but it must not be marked as evidence or verified unless provenance fields and the OIX evidence criteria are actually satisfied. Mapping to an evidence object requires explicit metadata and careful status semantics."
+  },
+  "limitations": [
+    "Digest is a placeholder and intentionally not computed.",
+    "Dates and URI are illustrative, not evidence.",
+    "No file transfer, hashing, signature, or source authenticity verification occurs.",
+    "An OIX evidence status of observed is not a claim of truth.",
+    "Draft; no implementation test."
+  ]
+}
