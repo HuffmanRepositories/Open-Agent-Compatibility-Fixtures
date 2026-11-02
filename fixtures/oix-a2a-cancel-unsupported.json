@@ -1,0 +1,41 @@
+{
+  "fixture_id": "oix-a2a-cancel-unsupported-001",
+  "title": "A2A task cancellation has no native OIX v0.1 equivalent",
+  "status": "draft",
+  "purpose": "Negative compatibility case: prevent a bridge from implying native cancellation support merely by inventing an OIX message type.",
+  "sources": [
+    {
+      "protocol": "OIX",
+      "version": "0.1",
+      "url": "https://github.com/HuffmanMainNode/Open-Intelligence-Exchange/blob/main/protocol/oix-v0.1.md"
+    },
+    {
+      "protocol": "A2A",
+      "version": "1.0.0",
+      "url": "https://a2a-protocol.org/v1.0.0/specification"
+    }
+  ],
+  "input": {
+    "a2a_operation": "CancelTask",
+    "task_id": "a2a-task-demo-42",
+    "oix_v0_1_defined_message_types": [
+      "agent.hello",
+      "agent.hello_ack",
+      "task.request",
+      "task.accepted",
+      "task.progress",
+      "task.result",
+      "evidence.submit",
+      "error"
+    ]
+  },
+  "expected": {
+    "outcome": "unsupported",
+    "description": "OIX v0.1 defines no native cancellation message or operation. A bridge must not emit a fabricated core message type or claim cancellation succeeded. Any application-level cancellation convention needs its own versioned extension/profile, acknowledgement, authorization, and behavior contract."
+  },
+  "limitations": [
+    "Spec-level negative test only; no live endpoint is invoked.",
+    "A custom bridge extension is possible but is not OIX v0.1 core semantics.",
+    "No implementation conformance or certification claim."
+  ]
+}
