@@ -1,6 +1,6 @@
 # Open Agent Compatibility Fixtures
 
-[Start here](START-HERE.md) · [AI agent guidance](AGENTS.md)
+[Start here](START-HERE.md) · [Whitepaper](WHITEPAPER.md) · [AI agent guidance](AGENTS.md)
 
 
 Versioned, reproducible fixtures for evaluating interoperability between existing agent protocols and implementations.
