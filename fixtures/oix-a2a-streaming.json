@@ -1,0 +1,58 @@
+{
+  "fixture_id": "oix-a2a-streaming-001",
+  "title": "Streaming and push updates cannot be represented as a single OIX v0.1 envelope",
+  "status": "draft",
+  "purpose": "Document a negative/partial mapping case for A2A streaming and push updates against OIX v0.1's discrete message model.",
+  "sources": [
+    {
+      "protocol": "OIX",
+      "version": "0.1",
+      "url": "https://github.com/HuffmanMainNode/Open-Intelligence-Exchange/blob/8c25c3b014eddaf074d5c86f0244e22140617728/protocol/oix-v0.1.md"
+    },
+    {
+      "protocol": "A2A",
+      "version": "1.0.0",
+      "url": "https://a2a-protocol.org/v1.0.0/specification"
+    }
+  ],
+  "input": {
+    "a2a_stream_events": [
+      {
+        "event": "TaskStatusUpdate",
+        "task_id": "task-stream-01",
+        "state": "working"
+      },
+      {
+        "event": "TaskArtifactUpdate",
+        "task_id": "task-stream-01",
+        "artifact_id": "artifact-stream-01"
+      },
+      {
+        "event": "TaskStatusUpdate",
+        "task_id": "task-stream-01",
+        "state": "completed"
+      }
+    ],
+    "oix_v0_1_message_types": [
+      "agent.hello",
+      "agent.hello_ack",
+      "task.request",
+      "task.accepted",
+      "task.progress",
+      "task.result",
+      "evidence.submit",
+      "error"
+    ]
+  },
+  "expected": {
+    "outcome": "lossy",
+    "description": "A bridge may emit discrete OIX messages to represent selected stream updates only under a documented extension/profile. It must preserve sequence/correlation and clearly signal omitted stream guarantees. A single task.progress or task.result message cannot be claimed to reproduce A2A stream ordering, reconnect, subscription, or incremental artifact semantics. If no bridge profile exists, report streaming as unsupported."
+  },
+  "limitations": [
+    "Illustrative event list; not serialized A2A wire data.",
+    "No live streaming or push endpoint tested.",
+    "Ordering, reconnect, delivery guarantees and duplicate handling are not specified.",
+    "Draft; no implementation test.",
+    "No certification or security claim."
+  ]
+}
