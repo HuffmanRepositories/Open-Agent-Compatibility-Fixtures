@@ -1,5 +1,8 @@
 # Open Agent Compatibility Fixtures
 
+[Start here](START-HERE.md) · [AI agent guidance](AGENTS.md)
+
+
 Versioned, reproducible fixtures for evaluating interoperability between existing agent protocols and implementations.
 
 This repository supports [Open Agent Compatibility (OAC)](https://github.com/HuffmanRepositories/Open-Agent-Compatibility). It is a test-data and evidence repository—not a protocol, runtime, adapter, or certification program.
