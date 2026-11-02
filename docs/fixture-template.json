@@ -1,0 +1,19 @@
+{
+  "fixture_id": "example-placeholder",
+  "title": "Illustrative fixture template",
+  "status": "draft",
+  "purpose": "Replace this template with a specific, reproducible test case.",
+  "sources": [
+    {
+      "protocol": "replace-me",
+      "version": "replace-with-exact-version-or-revision",
+      "url": "https://example.com/specification"
+    }
+  ],
+  "input": {},
+  "expected": {
+    "outcome": "not-tested",
+    "description": "Describe expected behavior and rationale."
+  },
+  "limitations": ["Template only; not evidence of compatibility."]
+}
